@@ -6,8 +6,14 @@
         xmlns:local="clr-namespace:MOD"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
+        d:DataContext="{d:DesignInstance local:MainViewModel}"
         >
     <Grid>
         <Button Click="Button_Click"/>
+        <TextBlock Grid.Column="1" Text="{Binding PP, UpdateSourceTrigger=PropertyChanged}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
     </Grid>
 </Window>

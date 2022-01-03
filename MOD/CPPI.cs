@@ -10,9 +10,6 @@ namespace MOD
 {
     public static class CPPI
     {
-        public static void Lo(string Message)
-        {
-            Log.Info(Message);
-        }
+
     }
 }

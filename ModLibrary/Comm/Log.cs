@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 using log4net;
@@ -10,9 +11,12 @@ namespace ModLibrary.Comm
     /// log4net 사용, log4net.config 참조, AssmblyInfo.cs 바인딩
     /// 2021-12-31 Debug, Info, Warn, Error, Fatal 기능 구현
     /// </summary>
-    public static class Log
+    public class Log
     {
-        private static readonly ILog log = LogManager.GetLogger("Log"); // 로그 객체 설정 Iog4net.config 파일 참조
+        private readonly ILog log = LogManager.GetLogger(""); // 로그 객체 설정 Iog4net.config 파일 참조
+
+        public event LogEventHandler LogEvent;
+        public delegate void LogEventHandler(LogModel logModel);
 
         /// <summary>
         /// Log Level Debug로 Log를 생성함
@@ -21,38 +25,71 @@ namespace ModLibrary.Comm
         /// </summary>
         /// <param name="Message">메세지</param>
         /// <param name="caller">호출 메서드 이름</param>
-        public static void Debug(string Message, [CallerMemberName] string caller = "")
+        public void Debug(string message, [CallerMemberName] string caller = "")
         {
+            // 로그 시간을 최우선으로 가져옴
+            DateTime LogTime = DateTime.Now;
+
             // 호출 Class명
-            string ClassName = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
+            string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
             // 호출 함수명 
             //string FuncName = new StackFrame(1, true).GetMethod().Name;
 
-            log.Debug($"CLASS=[{ClassName}] FUNCTION=[{caller}] MESSAGE=[{Message}]");
+            // JSON 형식으로 Log 생성
+            log.Debug($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
+
+            // 실시간 로그 기능 구현을 위한 이벤트 전달
+            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.DEBUG, ClassName = className, Function = caller, Message = message });
         }
 
-        public static void Info(string Message, [CallerMemberName] string caller = "")
+        public void Info(string message, [CallerMemberName] string caller = "")
         {
-            string ClassName = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
-            log.Info($"CLASS=[{ClassName}] FUNCTION=[{caller}] MESSAGE=[{Message}]");
+            DateTime LogTime = DateTime.Now;
+            string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
+            log.Info($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
+            LogEvent?.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.INFO, ClassName = className, Function = caller, Message = message });
         }
 
-        public static void Warn(string Message, [CallerMemberName] string caller = "")
+        public void Warn(string message, [CallerMemberName] string caller = "")
         {
-            string ClassName = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
-            log.Warn($"CLASS=[{ClassName}] FUNCTION=[{caller}] MESSAGE=[{Message}]");
+            DateTime LogTime = DateTime.Now;
+            string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
+            log.Warn($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
+            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.WARN, ClassName = className, Function = caller, Message = message });
         }
 
-        public static void Error(string Message, [CallerMemberName] string caller = "")
+        public void Error(string message, [CallerMemberName] string caller = "")
         {
-            string ClassName = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
-            log.Error($"CLASS=[{ClassName}] FUNCTION=[{caller}] MESSAGE=[{Message}]");
+            DateTime LogTime = DateTime.Now;
+            string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
+            log.Error($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
+            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.ERROR, ClassName = className, Function = caller, Message = message });
         }
 
-        public static void Fatal(string Message, [CallerMemberName] string caller = "")
+        public void Fatal(string message, [CallerMemberName] string caller = "")
         {
-            string ClassName = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
-            log.Fatal($"CLASS=[{ClassName}] FUNCTION=[{caller}] MESSAGE=[{Message}]");
+            DateTime LogTime = DateTime.Now;
+            string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
+            log.Fatal($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
+            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.FATAL, ClassName = className, Function = caller, Message = message });
         }
+    }
+    
+    public class LogModel
+    {
+        public DateTime Date { get; set; }
+        public LogLevel Level { get; set; }
+        public string ClassName { get; set; }
+        public string Function { get; set; }
+        public string Message { get; set; }
+    }
+
+    public enum LogLevel
+    {
+        DEBUG = 0,
+        INFO = 1,
+        WARN = 2,
+        ERROR = 3,
+        FATAL = 4
     }
 }
