@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MOD", "MOD\MOD.csproj", "{B5B2C70F-C411-40EB-AF94-3BE483060642}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BE036236-2DBD-4783-A891-526FA44BFAF1} = {BE036236-2DBD-4783-A891-526FA44BFAF1}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModLibrary", "ModLibrary\ModLibrary.csproj", "{BE036236-2DBD-4783-A891-526FA44BFAF1}"
 EndProject

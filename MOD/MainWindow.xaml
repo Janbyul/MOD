@@ -4,16 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MOD"
+        xmlns:GUI="clr-namespace:ModLibrary.GUI;assembly=ModLibrary"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         d:DataContext="{d:DesignInstance local:MainViewModel}"
         >
     <Grid>
-        <Button Click="Button_Click"/>
-        <TextBlock Grid.Column="1" Text="{Binding PP, UpdateSourceTrigger=PropertyChanged}"/>
+        <Border BorderBrush="DimGray" BorderThickness="0 0 2 0"/>
+        <StackPanel Orientation="Vertical">
+            <Border Width="50" Height="60" BorderThickness="0 0 0 2" Margin="0 5 0 5" BorderBrush="DimGray">
+                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/people_off.png" PressedImageSource="Resource/people_on.png" ImageStretch="Fill"/>
+            </Border>
+            <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/tracking_off.png" PressedImageSource="Resource/tracking_on.png" ImageStretch="Fill"/>
+            <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/report_off.png" PressedImageSource="Resource/report_on.png" ImageStretch="Fill"/>
+            <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/dashboard_off.png" PressedImageSource="Resource/dashboard_on.png" ImageStretch="Fill"/>
+        </StackPanel>
+        <Frame x:Name="Main_Frame" Grid.Column="1" Margin="0,1,0,-1"/>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="50"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <SolidColorBrush Color="SlateGray"/>
+        </Grid.Background>
     </Grid>
 </Window>

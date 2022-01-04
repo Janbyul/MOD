@@ -1,0 +1,25 @@
+﻿<Button x:Class="ModLibrary.GUI.ImageButton"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="ImgButton">
+    <Button.Template>
+        <ControlTemplate>
+            <Grid>
+                <Border CornerRadius="10">
+                    <Image Name="imgDefault" Source="{Binding Path=DefaultImageSource,ElementName=ImgButton}" Stretch="{Binding Path=ImageStretch,ElementName=ImgButton}"/>
+                </Border>
+                <ContentPresenter Content="{TemplateBinding Property=ContentControl.Content}"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="Button.IsPressed" Value="True">
+                    <Setter Property="Image.Source" TargetName="imgDefault" Value="{Binding Path=PressedImageSource,ElementName=ImgButton}"/>
+                    <Setter Property="UIElement.Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="10" Color="Black" Direction="0" Opacity="0.6" RenderingBias="Performance" ShadowDepth="0"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Button.Template>
+</Button>
