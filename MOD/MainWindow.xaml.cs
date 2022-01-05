@@ -23,24 +23,16 @@ namespace MOD
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static readonly Log log = new Log();
-
         private MainViewModel mainViewModel = new MainViewModel();
         public MainWindow()
         {
             InitializeComponent();
             DataContext = mainViewModel;
-            log.LogEvent += Log_LogEvent;
-        }
-
-        private void Log_LogEvent(LogModel logModel)
-        {
-            mainViewModel.PP = logModel.Message;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            log.Debug(("yyyy-MM-dd hh:mm:ss") + "TEST");
+            App.log.Debug(("yyyy-MM-dd hh:mm:ss") + "TEST");
         }
     }
 

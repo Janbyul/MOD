@@ -5,6 +5,9 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Threading;
+
+using ModLibrary.Comm;
 
 namespace MOD
 {
@@ -13,5 +16,32 @@ namespace MOD
     /// </summary>
     public partial class App : Application
     {
+        private Mutex _mutex;
+
+        public static readonly Log log = new Log();
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            string mutexName = "XAK";
+
+            _mutex = new Mutex(true, mutexName, out bool createNew);
+
+            if (!createNew)
+            {
+                _mutex = null;
+                Shutdown();
+            }
+
+            log.Info("프로그램 시작");
+
+            base.OnStartup(e);
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            log.Info("프로그램 종료");
+            _mutex = null;
+            base.OnExit(e);
+        }
     }
 }
