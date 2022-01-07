@@ -15,8 +15,7 @@ namespace ModLibrary.Comm
     {
         private readonly ILog log = LogManager.GetLogger(""); // 로그 객체 설정 Iog4net.config 파일 참조
 
-        public event LogEventHandler LogEvent;
-        public delegate void LogEventHandler(LogModel logModel);
+        public event Action<LogModel> LogEvent;
 
         /// <summary>
         /// Log Level Debug로 Log를 생성함
@@ -27,6 +26,7 @@ namespace ModLibrary.Comm
         /// <param name="caller">호출 메서드 이름</param>
         public void Debug(string message, [CallerMemberName] string caller = "")
         {
+#if DEBUG
             // 로그 시간을 최우선으로 가져옴
             DateTime LogTime = DateTime.Now;
 
@@ -39,7 +39,8 @@ namespace ModLibrary.Comm
             log.Debug($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
 
             // 실시간 로그 기능 구현을 위한 이벤트 전달
-            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.DEBUG, ClassName = className, Function = caller, Message = message });
+            LogEvent?.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.DEBUG, ClassName = className, Function = caller, Message = message });
+#endif
         }
 
         public void Info(string message, [CallerMemberName] string caller = "")

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MOD.Pasges
+namespace MOD.Pages
 {
     /// <summary>
-    /// ReportPage.xaml에 대한 상호 작용 논리
+    /// DashboardPage.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ReportPage : Page
+    public partial class DashboardPage : Page
     {
-        public ReportPage()
+        public DashboardPage()
         {
             InitializeComponent();
         }

@@ -33,6 +33,7 @@ namespace MOD
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             App.log.Debug(("yyyy-MM-dd hh:mm:ss") + "TEST");
+            Main_Frame.Navigate(new Uri(@"Pages\ReportPage.xaml", UriKind.Relative), "");
         }
     }
 

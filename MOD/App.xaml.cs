@@ -16,9 +16,12 @@ namespace MOD
     /// </summary>
     public partial class App : Application
     {
-        private Mutex _mutex;
+        private static Mutex _mutex;
 
         public static readonly Log log = new Log();
+
+        public static LogLevel RealTimeMinLogLevel { get; set; } = LogLevel.FATAL;
+        public static List<LogModel> RealTimeLogModel;
 
         protected override void OnStartup(StartupEventArgs e)
         {

@@ -10,20 +10,21 @@
         d:DataContext="{d:DesignInstance local:MainViewModel}"
         >
     <Grid>
-        <Border BorderBrush="DimGray" Margin="5 5 0 5" BorderThickness="2" CornerRadius="5"/>
-        <StackPanel Orientation="Vertical" Margin="5 0 0 0">
-            <Border Width="50" Height="60" BorderThickness="0 0 0 2" Margin="0 5 0 5" BorderBrush="DimGray">
-                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/people_off.png" PressedImageSource="Resource/people_on.png" ImageStretch="Fill"/>
-            </Border>
-            <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/tracking_off.png" PressedImageSource="Resource/tracking_on.png" ImageStretch="Fill"/>
-            <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/report_off.png" PressedImageSource="Resource/report_on.png" ImageStretch="Fill"/>
-            <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/dashboard_off.png" PressedImageSource="Resource/dashboard_on.png" ImageStretch="Fill"/>
-        </StackPanel>
-        <Border Grid.Column="1" Margin="5" BorderBrush="DimGray" BorderThickness="2" CornerRadius="5">
+        <Border BorderBrush="#FFDDDDDD" Margin="5 5 5 5" BorderThickness="2" CornerRadius="5">
+            <StackPanel Orientation="Vertical" Margin="0 0 0 0">
+                <Border Width="50" Height="60" BorderThickness="0 0 0 2" Margin="0 5 0 5" BorderBrush="#FFDDDDDD">
+                    <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/people_off.png" PressedImageSource="Resource/people_on.png" ImageStretch="Fill" Click="Button_Click"/>
+                </Border>
+                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/tracking_off.png" PressedImageSource="Resource/tracking_on.png" ImageStretch="Fill"/>
+                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/report_off.png" PressedImageSource="Resource/report_on.png" ImageStretch="Fill"/>
+                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/dashboard_off.png" PressedImageSource="Resource/dashboard_on.png" ImageStretch="Fill"/>
+            </StackPanel>
+        </Border>
+        <Border Grid.Column="1" Margin="5" BorderBrush="#FFDDDDDD" BorderThickness="2" CornerRadius="5">
             <Frame x:Name="Main_Frame" Grid.Column="1"/>
         </Border>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="55"/>
+            <ColumnDefinition Width="65"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.Background>
