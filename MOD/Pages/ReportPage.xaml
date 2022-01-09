@@ -4,11 +4,26 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MOD.Pages"
+      xmlns:log="clr-namespace:ModLibrary.Comm;assembly=ModLibrary"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ReportPage">
+      Title="ReportPage"
+      x:Name="Report">
 
     <Grid>
-        
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+            <TextBlock Text="시작일" Margin="5" VerticalAlignment="Center" FontSize="18" FontWeight="ExtraBold"/>
+            <DatePicker Margin="5 5 15 5" SelectedDate="{Binding StartDate, ElementName=Report}"  SelectedDateFormat="Long" Width="180" Grid.Column="1" VerticalAlignment="Center"/>
+            <TextBlock Text="종료일" Margin="5" VerticalAlignment="Center" FontSize="18" FontWeight="ExtraBold"/>
+            <DatePicker Margin="5 5 15 5" SelectedDate="{Binding EndDate, ElementName=Report}"  SelectedDateFormat="Long" Width="180" Grid.Column="3" VerticalAlignment="Center"/>
+            <TextBlock Text="로그수준" Margin="5" VerticalAlignment="Center" FontSize="18" FontWeight="ExtraBold"/>
+            <ComboBox ItemsSource="{Binding Source={StaticResource LogType}}" SelectedItem="{Binding ILogLevel, ElementName=Report}" Height="20" Width="70"/>
+        </StackPanel>
+
+        <ListView ItemsSource="{Binding Path=MyLog, ElementName=Report}" Grid.Row="1"/>
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="30" MaxHeight="50"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
     </Grid>
 </Page>

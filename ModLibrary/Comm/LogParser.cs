@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace ModLibrary.Comm
 {
-    class LogParser
+    public static class LogParser
     {
+        public static List<LogModel> GetLog(DateTime startdate, DateTime enddate, LogLevel loglevel)
+        {
+
+            return null;
+        }
     }
 }

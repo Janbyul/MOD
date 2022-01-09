@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comm\Log.cs" />
+    <Compile Include="Comm\LogParser.cs" />
     <Compile Include="GUI\ImageButton.xaml.cs">
       <DependentUpon>ImageButton.xaml</DependentUpon>
     </Compile>

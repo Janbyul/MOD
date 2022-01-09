@@ -1,9 +1,17 @@
 ﻿<Application x:Class="MOD.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+             xmlns:log="clr-namespace:ModLibrary.Comm;assembly=ModLibrary"
              xmlns:local="clr-namespace:MOD"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ObjectDataProvider MethodName="GetValues"
+                             ObjectType="{x:Type sys:Enum}"
+                             x:Key="LogType">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="log:LogLevel"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </Application.Resources>
 </Application>
