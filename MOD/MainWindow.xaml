@@ -15,9 +15,9 @@
                 <Border Width="50" Height="60" BorderThickness="0 0 0 2" Margin="0 5 0 5" BorderBrush="#FFDDDDDD">
                     <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/people_off.png" PressedImageSource="Resource/people_on.png" ImageStretch="Fill" Click="Button_Click"/>
                 </Border>
-                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/tracking_off.png" PressedImageSource="Resource/tracking_on.png" ImageStretch="Fill"/>
-                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/report_off.png" PressedImageSource="Resource/report_on.png" ImageStretch="Fill"/>
-                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/dashboard_off.png" PressedImageSource="Resource/dashboard_on.png" ImageStretch="Fill"/>
+                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/tracking_off.png" PressedImageSource="Resource/tracking_on.png" ImageStretch="Fill" Click="Button_Click"/>
+                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/report_off.png" PressedImageSource="Resource/report_on.png" ImageStretch="Fill" Click="Button_Click"/>
+                <GUI:ImageButton Width="40" Height="40" Margin="5" DefaultImageSource="Resource/dashboard_off.png" PressedImageSource="Resource/dashboard_on.png" ImageStretch="Fill" Click="Button_Click"/>
             </StackPanel>
         </Border>
         <Border Grid.Column="1" Margin="5" BorderBrush="#FFDDDDDD" BorderThickness="2" CornerRadius="5">

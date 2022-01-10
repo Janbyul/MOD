@@ -36,10 +36,12 @@ namespace ModLibrary.Comm
             //string FuncName = new StackFrame(1, true).GetMethod().Name;
 
             // JSON 형식으로 Log 생성
-            log.Debug($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
+            log.Debug($"\"DATE\":\"{LogTime:yyyy-MM-dd HH:mm:ss.fff}\", \"CLASSNAME\":\"{className}\", \"FUNCTIONNAME\":\"{caller}\", \"MESSAGE\":\"{message}\"");
 
             // 실시간 로그 기능 구현을 위한 이벤트 전달
-            LogEvent?.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.DEBUG, ClassName = className, Function = caller, Message = message });
+            LogEvent?.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.DEBUG, ClassName = className, FunctionName = caller, Message = message });
+            
+            
 #endif
         }
 
@@ -47,32 +49,32 @@ namespace ModLibrary.Comm
         {
             DateTime LogTime = DateTime.Now;
             string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
-            log.Info($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
-            LogEvent?.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.INFO, ClassName = className, Function = caller, Message = message });
+            log.Info($"\"DATE\":\"{LogTime:yyyy-MM-dd HH:mm:ss.fff}\", \"CLASSNAME\":\"{className}\", \"FUNCTIONNAME\":\"{caller}\", \"MESSAGE\":\"{message}\"");
+            LogEvent?.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.INFO, ClassName = className, FunctionName = caller, Message = message });
         }
 
         public void Warn(string message, [CallerMemberName] string caller = "")
         {
             DateTime LogTime = DateTime.Now;
             string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
-            log.Warn($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
-            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.WARN, ClassName = className, Function = caller, Message = message });
+            log.Warn($"\"DATE\":\"{LogTime:yyyy-MM-dd HH:mm:ss.fff}\", \"CLASSNAME\":\"{className}\", \"FUNCTIONNAME\":\"{caller}\", \"MESSAGE\":\"{message}\"");
+            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.WARN, ClassName = className, FunctionName = caller, Message = message });
         }
 
         public void Error(string message, [CallerMemberName] string caller = "")
         {
             DateTime LogTime = DateTime.Now;
             string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
-            log.Error($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
-            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.ERROR, ClassName = className, Function = caller, Message = message });
+            log.Error($"\"DATE\":\"{LogTime:yyyy-MM-dd HH:mm:ss.fff}\", \"CLASSNAME\":\"{className}\", \"FUNCTIONNAME\":\"{caller}\", \"MESSAGE\":\"{message}\"");
+            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.ERROR, ClassName = className, FunctionName = caller, Message = message });
         }
 
         public void Fatal(string message, [CallerMemberName] string caller = "")
         {
             DateTime LogTime = DateTime.Now;
             string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
-            log.Fatal($"'DATE':'{LogTime:yyyy-MM-dd HH:mm:ss.fff}', 'CLASS':'{className}', 'FUNCTION':'{caller}' 'MESSAGE':'{message}'");
-            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.FATAL, ClassName = className, Function = caller, Message = message });
+            log.Fatal($"\"DATE\":\"{LogTime:yyyy-MM-dd HH:mm:ss.fff}\", \"CLASSNAME\":\"{className}\", \"FUNCTIONNAME\":\"{caller}\", \"MESSAGE\":\"{message}\"");
+            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.FATAL, ClassName = className, FunctionName = caller, Message = message });
         }
     }
     
@@ -81,7 +83,7 @@ namespace ModLibrary.Comm
         public DateTime Date { get; set; }
         public LogLevel Level { get; set; }
         public string ClassName { get; set; }
-        public string Function { get; set; }
+        public string FunctionName { get; set; }
         public string Message { get; set; }
     }
 

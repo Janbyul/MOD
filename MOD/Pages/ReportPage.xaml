@@ -20,7 +20,17 @@
             <ComboBox ItemsSource="{Binding Source={StaticResource LogType}}" SelectedItem="{Binding ILogLevel, ElementName=Report}" Height="20" Width="70"/>
         </StackPanel>
 
-        <ListView ItemsSource="{Binding Path=MyLog, ElementName=Report}" Grid.Row="1"/>
+        <ListView ItemsSource="{Binding Path=MyLog, ElementName=Report}" Grid.Row="1">
+            <ListView.View>
+                <GridView AllowsColumnReorder="True">
+                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date, StringFormat=yyyy_MM_dd HH:mm:ss.fff}"/>
+                    <GridViewColumn Header="Level" DisplayMemberBinding="{Binding Level}"/>
+                    <GridViewColumn Header="Class" DisplayMemberBinding="{Binding ClassName}"/>
+                    <GridViewColumn Header="Function" DisplayMemberBinding="{Binding FunctionName}"/>
+                    <GridViewColumn Header="Message" DisplayMemberBinding="{Binding Message}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="30" MaxHeight="50"/>
             <RowDefinition Height="9*"/>

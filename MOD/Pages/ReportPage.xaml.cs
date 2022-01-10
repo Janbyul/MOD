@@ -32,50 +32,26 @@ namespace MOD.Pages
         #region public property
         public DateTime StartDate
         {
-            get
-            {
-                return (DateTime)this.GetValue(StartDateProperty);
-            }
-            set
-            {
-                this.SetValue(StartDateProperty, value);
-            }
+            get => (DateTime)GetValue(StartDateProperty);
+            set => SetValue(StartDateProperty, value);
         }
 
         public DateTime EndDate
         {
-            get
-            {
-                return (DateTime)this.GetValue(EndDateProperty);
-            }
-            set
-            {
-                this.SetValue(EndDateProperty, value);
-            }
+            get => (DateTime)GetValue(EndDateProperty);
+            set => SetValue(EndDateProperty, value);
         }
 
         public LogLevel ILogLevel
         {
-            get
-            {
-                return (LogLevel)this.GetValue(LogLevelProperty);
-            }
-            set
-            {
-                this.SetValue(LogLevelProperty, value);
-            }
+            get => (LogLevel)GetValue(LogLevelProperty);
+            set => SetValue(LogLevelProperty, value);
         }
 
-        public LogModel MyLog
+        public List<LogModel> MyLog
         {
-            get
-            {
-                return this.GetValue(MyLogProperty) as LogModel;
-            }
-            set
-            {
-                this.SetValue(MyLogProperty, value);
-            }
+            get => GetValue(MyLogProperty) as List<LogModel>;
+            set => SetValue(MyLogProperty, value);
         }
         #endregion
 
@@ -102,8 +78,8 @@ namespace MOD.Pages
         {
             if (sender != null && sender is ReportPage)
             {
-                ReportPage imgbtn = sender as ReportPage;
-                imgbtn.OnLogLevelChanged(e.OldValue, e.NewValue);
+                ReportPage rp = sender as ReportPage;
+                rp.OnLogLevelChanged(e.OldValue, e.NewValue);
             }
         }
 
@@ -112,23 +88,42 @@ namespace MOD.Pages
         #region protected method
         protected void OnStartDateChanged(object oldValue, object newValue)
         {
-            this.StartDate = (DateTime)newValue;
+            if ((DateTime)newValue > EndDate)
+            {
+                EndDate = (DateTime)newValue;
+            }
+            StartDate = (DateTime)newValue;
+
+            if (IsLoaded)
+                MyLog = LogParser.GetLog(StartDate, EndDate, ILogLevel);
         }
 
         protected void OnEndDateChanged(object oldValue, object newValue)
         {
-            this.EndDate = (DateTime)newValue;
+            if ((DateTime)newValue < StartDate)
+            {
+                StartDate = (DateTime)newValue;
+            }
+
+            EndDate = (DateTime)newValue > DateTime.Today ? DateTime.Today : (DateTime)newValue;
+
+            if (IsLoaded)
+                MyLog = LogParser.GetLog(StartDate, EndDate, ILogLevel);
         }
 
         protected void OnLogLevelChanged(object oldValue, object newValue)
         {
-            this.ILogLevel = (LogLevel)newValue;
+            ILogLevel = (LogLevel)newValue;
+
+            if (IsLoaded)
+                MyLog = LogParser.GetLog(StartDate, EndDate, ILogLevel);
         }
         #endregion
 
         public ReportPage()
         {
             InitializeComponent();
+            MyLog = LogParser.GetLog(StartDate, EndDate, ILogLevel);
         }
     }
 }
