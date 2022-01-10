@@ -125,5 +125,19 @@ namespace MOD.Pages
             InitializeComponent();
             MyLog = LogParser.GetLog(StartDate, EndDate, ILogLevel);
         }
+
+        private void Report_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            GridView view = logview.View as GridView;
+
+            double TotalWidth = 0.0;
+
+            for (int i = 0; i < view.Columns.Count - 1; i++)
+            {
+                TotalWidth += view.Columns[i].ActualWidth;
+            }
+
+            double db = logview.ActualWidth - TotalWidth;
+        }
     }
 }

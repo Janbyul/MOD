@@ -8,9 +8,20 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Height="Auto" Width="Auto"
       Title="ReamltimePage"
-      x:Name="RTPage">
+      x:Name="RTPage"
+      d:DataContext="{d:DesignInstance local:RealtimeViewModel}">
 
     <Grid>
-        <DataGrid ItemsSource="{Binding Path=LogModels,ElementName=RTPage}" AutoGenerateColumns="True"/>
+        <ListView ItemsSource="{Binding MyLog, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date, StringFormat=yyyy_MM_dd HH:mm:ss.fff, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Level" DisplayMemberBinding="{Binding Level, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Class" DisplayMemberBinding="{Binding ClassName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Function" DisplayMemberBinding="{Binding FunctionName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <GridViewColumn Header="Message" DisplayMemberBinding="{Binding Message, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Page>

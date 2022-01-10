@@ -22,7 +22,6 @@ namespace MOD
 
         public static LogLevel RealTimeLogMinLogLevel { get; set; } = LogLevel.DEBUG;
         public static int RealTimeLogCount { get; set; } = 20;
-        public static List<LogModel> RealTimeLogModel = new List<LogModel>();
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -35,13 +34,6 @@ namespace MOD
                 _mutex = null;
                 Shutdown();
             }
-
-            log.LogEvent += (p) => { if (p.Level >= RealTimeLogMinLogLevel)
-                {
-                    if (RealTimeLogModel.Count >= RealTimeLogCount)
-                        RealTimeLogModel.RemoveAt(0);
-                    RealTimeLogModel.Add(p);
-                } };
 
             log.Info("프로그램 시작");
 

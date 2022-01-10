@@ -23,45 +23,34 @@ namespace MOD.Pages
     /// </summary>
     public partial class RealtimePage : Page
     {
-        #region dependency property
-        public static readonly DependencyProperty LogModelsProperty = DependencyProperty.Register("LogModels", typeof(List<LogModel>), typeof(RealtimePage), new PropertyMetadata(null, new PropertyChangedCallback(LogModelChangedCallback)));
-        #endregion
-
-        #region public property
-        public List<LogModel> LogModels
-        {
-            get => GetValue(LogModelsProperty) as List<LogModel>;
-            set => SetValue(LogModelsProperty, value);
-        }
-        #endregion
-
-        #region callback
-        private static void LogModelChangedCallback(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (sender != null && sender is RealtimePage)
-            {
-                RealtimePage realtimePage = sender as RealtimePage;
-                realtimePage.OnLogModelsChanged(e.OldValue, e.NewValue);
-            }
-        }
-        #endregion
-
-        #region protected method
-        protected void OnLogModelsChanged(object oldValue, object newValue)
-        {
-            LogModels = newValue as List<LogModel>;
-        }
-        #endregion
-
+        private readonly RealtimeViewModel VM_RealtimePage = new RealtimeViewModel();
         public RealtimePage()
         {
             InitializeComponent();
+            DataContext = VM_RealtimePage;
+
+            App.log.LogEvent += (p) => {
+                if (p.Level >= App.RealTimeLogMinLogLevel)
+                {
+                    if (VM_RealtimePage.MyLog.Count >= App.RealTimeLogCount)
+                        VM_RealtimePage.MyLog.RemoveAt(0);
+                    VM_RealtimePage.AddMyLog(p);
+                }
+            };
         }
     }
 
     public class RealtimeViewModel : INotifyPropertyChanged
     {
-        public List<LogModel> logModels;
+        private readonly List<LogModel> mylog = new List<LogModel>();
+        public List<LogModel> MyLog { get; set; } = new List<LogModel>();
+
+        public void AddMyLog(LogModel logmodel)
+        {
+            mylog.Add(logmodel);
+            MyLog = mylog;
+            OnPropertyChanged("MyLog");
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
