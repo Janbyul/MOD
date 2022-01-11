@@ -9,6 +9,6 @@
       Title="프로필">
 
     <Grid>
-        
+        <Image Source="../Resource/IdentificationPhoto.jpg"/>
     </Grid>
 </Page>
