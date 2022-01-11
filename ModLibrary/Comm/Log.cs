@@ -26,7 +26,7 @@ namespace ModLibrary.Comm
         /// <param name="caller">호출 메서드 이름</param>
         public void Debug(string message, [CallerMemberName] string caller = "")
         {
-#if DEBUG
+        #if DEBUG
             // 로그 시간을 최우선으로 가져옴
             DateTime LogTime = DateTime.Now;
 
@@ -40,9 +40,7 @@ namespace ModLibrary.Comm
 
             // 실시간 로그 기능 구현을 위한 이벤트 전달
             LogEvent?.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.DEBUG, ClassName = className, FunctionName = caller, Message = message });
-            
-            
-#endif
+        #endif
         }
 
         public void Info(string message, [CallerMemberName] string caller = "")
@@ -58,7 +56,7 @@ namespace ModLibrary.Comm
             DateTime LogTime = DateTime.Now;
             string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
             log.Warn($"\"DATE\":\"{LogTime:yyyy-MM-dd HH:mm:ss.fff}\", \"CLASSNAME\":\"{className}\", \"FUNCTIONNAME\":\"{caller}\", \"MESSAGE\":\"{message}\"");
-            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.WARN, ClassName = className, FunctionName = caller, Message = message });
+            LogEvent?.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.WARN, ClassName = className, FunctionName = caller, Message = message });
         }
 
         public void Error(string message, [CallerMemberName] string caller = "")
@@ -66,7 +64,7 @@ namespace ModLibrary.Comm
             DateTime LogTime = DateTime.Now;
             string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
             log.Error($"\"DATE\":\"{LogTime:yyyy-MM-dd HH:mm:ss.fff}\", \"CLASSNAME\":\"{className}\", \"FUNCTIONNAME\":\"{caller}\", \"MESSAGE\":\"{message}\"");
-            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.ERROR, ClassName = className, FunctionName = caller, Message = message });
+            LogEvent?.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.ERROR, ClassName = className, FunctionName = caller, Message = message });
         }
 
         public void Fatal(string message, [CallerMemberName] string caller = "")
@@ -74,7 +72,7 @@ namespace ModLibrary.Comm
             DateTime LogTime = DateTime.Now;
             string className = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Name;
             log.Fatal($"\"DATE\":\"{LogTime:yyyy-MM-dd HH:mm:ss.fff}\", \"CLASSNAME\":\"{className}\", \"FUNCTIONNAME\":\"{caller}\", \"MESSAGE\":\"{message}\"");
-            LogEvent.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.FATAL, ClassName = className, FunctionName = caller, Message = message });
+            LogEvent?.Invoke(new LogModel() { Date = LogTime, Level = LogLevel.FATAL, ClassName = className, FunctionName = caller, Message = message });
         }
     }
     

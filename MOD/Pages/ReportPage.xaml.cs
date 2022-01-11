@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -26,7 +27,7 @@ namespace MOD.Pages
         public static readonly DependencyProperty StartDateProperty = DependencyProperty.Register("StartDate", typeof(DateTime), typeof(ReportPage), new PropertyMetadata(DateTime.Now, new PropertyChangedCallback(StartDateChangedCallback)));
         public static readonly DependencyProperty EndDateProperty = DependencyProperty.Register("EndDate", typeof(DateTime), typeof(ReportPage), new PropertyMetadata(DateTime.Now, new PropertyChangedCallback(EndDateChangedCallback)));
         public static readonly DependencyProperty LogLevelProperty = DependencyProperty.Register("ILogLevel", typeof(LogLevel), typeof(ReportPage), new PropertyMetadata(LogLevel.INFO, new PropertyChangedCallback(LogLevelChangedCallback)));
-        public static readonly DependencyProperty MyLogProperty = DependencyProperty.Register("MyLog", typeof(List<LogModel>), typeof(ReportPage), new PropertyMetadata(null, null));
+        public static readonly DependencyProperty MyLogProperty = DependencyProperty.Register("MyLog", typeof(ObservableCollection<LogModel>), typeof(ReportPage), new PropertyMetadata(new ObservableCollection<LogModel>(), null));
         #endregion
 
         #region public property
@@ -48,9 +49,9 @@ namespace MOD.Pages
             set => SetValue(LogLevelProperty, value);
         }
 
-        public List<LogModel> MyLog
+        public ObservableCollection<LogModel> MyLog
         {
-            get => GetValue(MyLogProperty) as List<LogModel>;
+            get => GetValue(MyLogProperty) as ObservableCollection<LogModel>;
             set => SetValue(MyLogProperty, value);
         }
         #endregion
@@ -95,7 +96,7 @@ namespace MOD.Pages
             StartDate = (DateTime)newValue;
 
             if (IsLoaded)
-                MyLog = LogParser.GetLog(StartDate, EndDate, ILogLevel);
+                MyLog = new ObservableCollection<LogModel>(LogParser.GetLog(StartDate, EndDate, ILogLevel));
         }
 
         protected void OnEndDateChanged(object oldValue, object newValue)
@@ -108,7 +109,7 @@ namespace MOD.Pages
             EndDate = (DateTime)newValue > DateTime.Today ? DateTime.Today : (DateTime)newValue;
 
             if (IsLoaded)
-                MyLog = LogParser.GetLog(StartDate, EndDate, ILogLevel);
+                MyLog = new ObservableCollection<LogModel>(LogParser.GetLog(StartDate, EndDate, ILogLevel));
         }
 
         protected void OnLogLevelChanged(object oldValue, object newValue)
@@ -116,28 +117,126 @@ namespace MOD.Pages
             ILogLevel = (LogLevel)newValue;
 
             if (IsLoaded)
-                MyLog = LogParser.GetLog(StartDate, EndDate, ILogLevel);
+                MyLog = new ObservableCollection<LogModel>(LogParser.GetLog(StartDate, EndDate, ILogLevel));
         }
         #endregion
 
-        public ReportPage()
+        #region SizeChanged Event
+        private void Logview_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            InitializeComponent();
-            MyLog = LogParser.GetLog(StartDate, EndDate, ILogLevel);
-        }
-
-        private void Report_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            GridView view = logview.View as GridView;
+            ListView view = sender as ListView;
+            GridView gridView = view.View as GridView;
 
             double TotalWidth = 0.0;
 
-            for (int i = 0; i < view.Columns.Count - 1; i++)
+            for (int i = 0; i < gridView.Columns.Count - 1; i++)
             {
-                TotalWidth += view.Columns[i].ActualWidth;
+                TotalWidth += gridView.Columns[i].ActualWidth;
             }
 
-            double db = logview.ActualWidth - TotalWidth;
+            if (TotalWidth != 0 && view.ActualWidth > TotalWidth)
+            {
+                gridView.Columns[gridView.Columns.Count - 1].Width = view.ActualWidth - TotalWidth;
+            }
         }
+        #endregion
+
+        #region Loaded Event
+        private void Logview_Loaded(object sender, RoutedEventArgs e)
+        {
+            ListView view = sender as ListView;
+            GridView gridView = view.View as GridView;
+
+            double TotalWidth = 0.0;
+
+            for (int i = 0; i < gridView.Columns.Count - 1; i++)
+            {
+                TotalWidth += gridView.Columns[i].ActualWidth;
+            }
+
+            if (TotalWidth != 0 &&  view.ActualWidth > TotalWidth)
+            {
+                gridView.Columns[gridView.Columns.Count - 1].Width = view.ActualWidth - TotalWidth;
+            }
+        }
+        #endregion
+
+        #region ColumnHeader Sort
+        private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is GridViewColumnHeader ColumnHeader)
+            {
+                if (ColumnHeader.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    App.log.Debug("GridViewColumnHeader_Click : " + ColumnHeader.Column.Header.ToString());
+
+                    if (ColumnHeader.Tag == null || ColumnHeader.Tag.ToString().Equals("ASC"))
+                    {
+                        /* 
+                         * 패턴매칭 C# 8.0 이상부터 가능
+                        MyLog = ColumnHeader.Column.Header.ToString() switch
+                        {
+                            "Date" => new ObservableCollection<LogModel>(MyLog.OrderBy(o => o.Date));
+                        };
+                        */
+
+                        if (ColumnHeader.Column.Header.ToString().Equals("Date"))
+                        {
+                            MyLog = new ObservableCollection<LogModel>(MyLog.OrderByDescending(o => o.Date));
+                        }
+                        else if (ColumnHeader.Column.Header.ToString().Equals("Level"))
+                        {
+                            MyLog = new ObservableCollection<LogModel>(MyLog.OrderByDescending(o => o.Level));
+                        }
+                        else if (ColumnHeader.Column.Header.ToString().Equals("Class"))
+                        {
+                            MyLog = new ObservableCollection<LogModel>(MyLog.OrderByDescending(o => o.ClassName));
+                        }
+                        else if (ColumnHeader.Column.Header.ToString().Equals("Function"))
+                        {
+                            MyLog = new ObservableCollection<LogModel>(MyLog.OrderByDescending(o => o.FunctionName));
+                        }
+                        else if (ColumnHeader.Column.Header.ToString().Equals("Message"))
+                        {
+                            MyLog = new ObservableCollection<LogModel>(MyLog.OrderByDescending(o => o.Message));
+                        }
+                        ColumnHeader.Tag = "DESC";
+                    }
+                    else
+                    {
+                        if (ColumnHeader.Column.Header.ToString().Equals("Date"))
+                        {
+                            MyLog = new ObservableCollection<LogModel>(MyLog.OrderBy(o => o.Date));
+                        }
+                        else if (ColumnHeader.Column.Header.ToString().Equals("Level"))
+                        {
+                            MyLog = new ObservableCollection<LogModel>(MyLog.OrderBy(o => o.Level));
+                        }
+                        else if (ColumnHeader.Column.Header.ToString().Equals("Class"))
+                        {
+                            MyLog = new ObservableCollection<LogModel>(MyLog.OrderBy(o => o.ClassName));
+                        }
+                        else if (ColumnHeader.Column.Header.ToString().Equals("Function"))
+                        {
+                            MyLog = new ObservableCollection<LogModel>(MyLog.OrderBy(o => o.FunctionName));
+                        }
+                        else if (ColumnHeader.Column.Header.ToString().Equals("Message"))
+                        {
+                            MyLog = new ObservableCollection<LogModel>(MyLog.OrderBy(o => o.Message));
+                        }
+                        ColumnHeader.Tag = "ASC";
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Constructor
+        public ReportPage()
+        {
+            InitializeComponent();
+            MyLog = new ObservableCollection<LogModel>(LogParser.GetLog(StartDate, EndDate, ILogLevel));
+        }
+        #endregion
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -23,39 +24,72 @@ namespace MOD.Pages
     /// </summary>
     public partial class RealtimePage : Page
     {
-        private readonly RealtimeViewModel VM_RealtimePage = new RealtimeViewModel();
+        #region dependency property
+        public static readonly DependencyProperty MyLogProperty = DependencyProperty.Register("MyLog", typeof(ObservableCollection<LogModel>), typeof(RealtimePage), new PropertyMetadata(new ObservableCollection<LogModel>(), null));
+        #endregion
+
+        #region public property
+        public ObservableCollection<LogModel> MyLog
+        {
+            get => GetValue(MyLogProperty) as ObservableCollection<LogModel>;
+            set => SetValue(MyLogProperty, value);
+        }
+        #endregion
+
+        #region SizeChangedEvent
+        private void Logview_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ListView view = sender as ListView;
+            GridView gridView = view.View as GridView;
+
+            double TotalWidth = 0.0;
+
+            for (int i = 0; i < gridView.Columns.Count - 1; i++)
+            {
+                TotalWidth += gridView.Columns[i].ActualWidth;
+            }
+
+            if (TotalWidth != 0 && view.ActualWidth > TotalWidth)
+            {
+                gridView.Columns[gridView.Columns.Count - 1].Width = view.ActualWidth - TotalWidth;
+            }
+        }
+        #endregion
+
+        #region Loaded Event
+        private void Logview_Loaded(object sender, RoutedEventArgs e)
+        {
+            ListView view = sender as ListView;
+            GridView gridView = view.View as GridView;
+
+            double TotalWidth = 0.0;
+
+            for (int i = 0; i < gridView.Columns.Count - 1; i++)
+            {
+                TotalWidth += gridView.Columns[i].ActualWidth;
+            }
+
+            if (TotalWidth != 0 && view.ActualWidth > TotalWidth)
+            {
+                gridView.Columns[gridView.Columns.Count - 1].Width = view.ActualWidth - TotalWidth;
+            }
+        }
+        #endregion
+
+        #region Constructor
         public RealtimePage()
         {
             InitializeComponent();
-            DataContext = VM_RealtimePage;
 
             App.log.LogEvent += (p) => {
                 if (p.Level >= App.RealTimeLogMinLogLevel)
                 {
-                    if (VM_RealtimePage.MyLog.Count >= App.RealTimeLogCount)
-                        VM_RealtimePage.MyLog.RemoveAt(0);
-                    VM_RealtimePage.AddMyLog(p);
+                    if (MyLog.Count >= App.RealTimeLogCount)
+                        MyLog.RemoveAt(0);
+                    MyLog.Add(p);
                 }
             };
         }
-    }
-
-    public class RealtimeViewModel : INotifyPropertyChanged
-    {
-        private readonly List<LogModel> mylog = new List<LogModel>();
-        public List<LogModel> MyLog { get; set; } = new List<LogModel>();
-
-        public void AddMyLog(LogModel logmodel)
-        {
-            mylog.Add(logmodel);
-            MyLog = mylog;
-            OnPropertyChanged("MyLog");
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        #endregion
     }
 }

@@ -14,6 +14,8 @@ namespace ModLibrary.Comm
 {
     public static class LogParser
     {
+        private static readonly Log log = new Log();
+
         public static List<LogModel> GetLog(DateTime startdate, DateTime enddate, LogLevel loglevel)
         {
             List<LogModel> LM = new List<LogModel>();
@@ -50,9 +52,14 @@ namespace ModLibrary.Comm
                         }
                     }
                 }
+                else
+                {
+                    log.Warn("파일 없음 FileName = " + fi.Name);
+                }
             }
-            catch
+            catch (Exception ex)
             {
+                log.Error("로그 파일 불러오기 오류 Exception=" + ex.Message);
                 return new List<LogModel>();
             }
 

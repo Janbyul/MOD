@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Threading;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -27,7 +29,7 @@ namespace MOD
     {
         private readonly RealtimePage realtimePage = new RealtimePage();
 
-        private MainViewModel mainViewModel = new MainViewModel();
+        private readonly MainViewModel mainViewModel = new MainViewModel();
         public MainWindow()
         {
             InitializeComponent();
@@ -53,7 +55,6 @@ namespace MOD
                     break;
                 case "GoDashboard":
                     Main_Frame.Navigate(new Uri(@"Pages\DashboardPage.xaml", UriKind.Relative));
-                    App.log.Debug("GoDashboardPage");
                     break;
             }
         }
@@ -61,16 +62,17 @@ namespace MOD
 
     public class MainViewModel : INotifyPropertyChanged
     {
-        private string pp = "";
-        public string PP
+        public MainViewModel()
         {
-            get => pp;
-            set
+            DispatcherTimer timer = new DispatcherTimer
             {
-                pp = value;
-                OnPropertyChanged("PP");
-            }
+                Interval = TimeSpan.FromSeconds(0.1)
+            };
+            timer.Tick += (p, q) => { OnPropertyChanged("HomeTime"); };
+            timer.Start();
         }
+
+        public DateTime HomeTime => DateTime.Now;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
