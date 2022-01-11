@@ -29,11 +29,12 @@ namespace MOD
     {
         private readonly RealtimePage realtimePage = new RealtimePage();
 
-        private readonly MainViewModel mainViewModel = new MainViewModel();
+        private readonly MainViewModel VM_Main = new MainViewModel();
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = mainViewModel;
+            DataContext = VM_Main;
+            realtimePage.NotificationEvent += (p) => { VM_Main.Message = $"확인 요망 : [{p.Date:yyyy-MM-dd HH:mm:ss.fff}] [{p.Level}] [{p.ClassName}]"; };
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -53,8 +54,8 @@ namespace MOD
                     Main_Frame.Navigate(new Uri(@"Pages\ReportPage.xaml", UriKind.Relative));
                     App.log.Debug("GoReportPage");
                     break;
-                case "GoDashboard":
-                    Main_Frame.Navigate(new Uri(@"Pages\DashboardPage.xaml", UriKind.Relative));
+                case "CreateError":
+                    App.log.Fatal("수동 오류 생성");
                     break;
             }
         }
@@ -73,6 +74,16 @@ namespace MOD
         }
 
         public DateTime HomeTime => DateTime.Now;
+        private string message = "";
+        public string Message
+        {
+            get => message;
+            set
+            {
+                message = value;
+                OnPropertyChanged("Message");
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

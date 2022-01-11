@@ -26,6 +26,9 @@ namespace MOD.Pages
     {
         #region dependency property
         public static readonly DependencyProperty MyLogProperty = DependencyProperty.Register("MyLog", typeof(ObservableCollection<LogModel>), typeof(RealtimePage), new PropertyMetadata(new ObservableCollection<LogModel>(), null));
+        public static readonly DependencyProperty DisplayLogLevelProperty = DependencyProperty.Register("DisplayLogLevel", typeof(LogLevel), typeof(RealtimePage), new PropertyMetadata(LogLevel.DEBUG, null));
+        public static readonly DependencyProperty MaxLogCountProperty = DependencyProperty.Register("MaxLogCount", typeof(int), typeof(RealtimePage), new PropertyMetadata(20, null));
+        public static readonly DependencyProperty NotificationLogLevelProperty = DependencyProperty.Register("NotificationLogLevel", typeof(LogLevel), typeof(RealtimePage), new PropertyMetadata(LogLevel.ERROR, null));
         #endregion
 
         #region public property
@@ -33,6 +36,24 @@ namespace MOD.Pages
         {
             get => GetValue(MyLogProperty) as ObservableCollection<LogModel>;
             set => SetValue(MyLogProperty, value);
+        }
+
+        public LogLevel DisplayLogLevel
+        {
+            get => (LogLevel)GetValue(DisplayLogLevelProperty);
+            set => SetValue(DisplayLogLevelProperty, value);
+        }
+
+        public int MaxLogCount
+        {
+            get => (int)GetValue(MaxLogCountProperty);
+            set => SetValue(MaxLogCountProperty, value);
+        }
+
+        public LogLevel NotificationLogLevel
+        {
+            get => (LogLevel)GetValue(NotificationLogLevelProperty);
+            set => SetValue(NotificationLogLevelProperty, value);
         }
         #endregion
 
@@ -76,17 +97,25 @@ namespace MOD.Pages
         }
         #endregion
 
+        #region Notification Event
+        public event Action<LogModel> NotificationEvent;
+        #endregion
+
         #region Constructor
         public RealtimePage()
         {
             InitializeComponent();
 
             App.log.LogEvent += (p) => {
-                if (p.Level >= App.RealTimeLogMinLogLevel)
+                if (p.Level >= DisplayLogLevel)
                 {
-                    if (MyLog.Count >= App.RealTimeLogCount)
+                    if (MyLog.Count >= MaxLogCount)
                         MyLog.RemoveAt(0);
                     MyLog.Add(p);
+                }
+                if (p.Level >= NotificationLogLevel)
+                {
+                    NotificationEvent?.Invoke(p);
                 }
             };
         }

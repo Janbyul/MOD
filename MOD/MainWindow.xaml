@@ -9,20 +9,20 @@
         Title="RPM" Height="768" Width="1024"
         d:DataContext="{d:DesignInstance local:MainViewModel}">
     <Grid>
-        <Border Grid.RowSpan="2" BorderBrush="#FFDDDDDD" Margin="5 5 5 5" BorderThickness="2" CornerRadius="5">
+        <Border Grid.RowSpan="2" BorderBrush="#FFDDDDDD" Margin="5 5 5 5" BorderThickness="2" CornerRadius="5" Background="#FF92A6BB">
             <StackPanel Orientation="Vertical" Margin="0 0 0 0">
                 <Border Width="50" Height="60" BorderThickness="0 0 0 2" Margin="0 5 0 5" BorderBrush="#FFDDDDDD">
                     <GUI:ImageButton Tag="GoResume" ToolTip="프로필" Width="40" Height="40" Margin="5" DefaultImageSource="Resource/people_off.png" PressedImageSource="Resource/people_on.png" ImageStretch="Fill" Click="Button_Click"/>
                 </Border>
                 <GUI:ImageButton Tag="GoRealTime" ToolTip="실시간 로그" Width="40" Height="40" Margin="5" DefaultImageSource="Resource/tracking_off.png" PressedImageSource="Resource/tracking_on.png" ImageStretch="Fill" Click="Button_Click"/>
                 <GUI:ImageButton Tag="GoReport" ToolTip="로그 검색" Width="40" Height="40" Margin="5" DefaultImageSource="Resource/report_off.png" PressedImageSource="Resource/report_on.png" ImageStretch="Fill" Click="Button_Click"/>
-                <GUI:ImageButton Tag="GoDashboard" ToolTip="대시 보드" Width="40" Height="40" Margin="5" DefaultImageSource="Resource/dashboard_off.png" PressedImageSource="Resource/dashboard_on.png" ImageStretch="Fill" Click="Button_Click"/>
+                <GUI:ImageButton Tag="CreateError" ToolTip="오류 생성" Width="40" Height="40" Margin="5" DefaultImageSource="Resource/dashboard_off.png" PressedImageSource="Resource/dashboard_on.png" ImageStretch="Fill" Click="Button_Click"/>
             </StackPanel>
         </Border>
         <Border Grid.Row="1" Grid.Column="1" Margin="5" BorderBrush="#FFDDDDDD" BorderThickness="2" CornerRadius="5">
             <Frame x:Name="Main_Frame" Grid.Column="1" NavigationUIVisibility="Hidden"/>
         </Border>
-        <Border Grid.Column="1" Margin="5" BorderBrush="#FFDDDDDD" BorderThickness="2" CornerRadius="5">
+        <Border Grid.Column="1" Margin="5" BorderBrush="#FFDDDDDD" BorderThickness="2" CornerRadius="5" Background="#FF525E69">
             <Grid Margin="10">
                 <Viewbox VerticalAlignment="Center" HorizontalAlignment="Right">
                     <TextBlock Text="{Binding HomeTime, StringFormat=yyyy-MM-dd HH:mm:ss, UpdateSourceTrigger=PropertyChanged}" Foreground="White" FontWeight="SemiBold"/>
@@ -30,6 +30,7 @@
                 <Viewbox VerticalAlignment="Center" HorizontalAlignment="Left">
                     <TextBlock Text="{Binding Path=Content.Title, ElementName=Main_Frame}" Foreground="White" FontWeight="SemiBold"/>
                 </Viewbox>
+                <GUI:Notification Message="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </Grid>
         </Border>
         <Grid.RowDefinitions>
