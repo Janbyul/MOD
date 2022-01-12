@@ -7,7 +7,8 @@
         xmlns:GUI="clr-namespace:ModLibrary.GUI;assembly=ModLibrary"
         mc:Ignorable="d"
         Title="RPM" Height="768" Width="1024"
-        d:DataContext="{d:DesignInstance local:MainViewModel}">
+        d:DataContext="{d:DesignInstance local:MainViewModel}"
+        Loaded="Window_Loaded">
     <Grid>
         <Border Grid.RowSpan="2" BorderBrush="#FFDDDDDD" Margin="5 5 5 5" BorderThickness="2" CornerRadius="5" Background="#FF92A6BB">
             <StackPanel Orientation="Vertical" Margin="0 0 0 0">

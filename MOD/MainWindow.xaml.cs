@@ -59,6 +59,12 @@ namespace MOD
                     break;
             }
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Main_Frame.Navigate(new Uri(@"Pages\ResumePage.xaml", UriKind.Relative));
+            App.log.Debug("GoResumePage");
+        }
     }
 
     public class MainViewModel : INotifyPropertyChanged
