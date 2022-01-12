@@ -9,6 +9,23 @@
       Title="프로필">
 
     <Grid>
+
+        <TextBlock Text="{Binding Title}"/>
+        <TextBlock Text="{Binding SubTitle}"/>
+        <Image Source="{Binding}"/>
+        <TextBlock Text="{Binding }"/>
+        <TextBlock Text="{Binding }"/>
+        <TextBlock Text="{Binding }"/>
+        <TextBlock Text="{Binding }"/>
+        <TextBlock Text="{Binding }"/>
+        <TextBlock Text="{Binding }"/>
+        <TextBlock Text="{Binding }"/>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Image Source="../Resource/IdentificationPhoto.jpg"/>
     </Grid>
 </Page>
