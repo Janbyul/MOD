@@ -34,7 +34,7 @@ namespace MOD
         {
             InitializeComponent();
             DataContext = VM_Main;
-            realtimePage.NotificationEvent += (p) => { VM_Main.Message = $"확인 요망 : [{p.Date:yyyy-MM-dd HH:mm:ss.fff}] [{p.Level}] [{p.ClassName}]"; };
+            realtimePage.NotificationEvent += (p) => { VM_Main.Message = $"[{p.Level}] 로그 발생 : [{p.Date:yyyy-MM-dd HH:mm:ss.fff}] [{p.ClassName}]"; };
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
