@@ -4,27 +4,75 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MOD.Pages"
-      mc:Ignorable="d" 
+      xmlns:Gui="clr-namespace:ModLibrary.GUI;assembly=ModLibrary"
+      mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="프로필">
+      Title="프로필"
+      d:DataContext="{d:DesignInstance local:ResumeViewModel}"
+      >
 
-    <Grid>
-        <Image Source="../Resource/IdentificationPhoto.jpg"/>
-        <TextBlock Text="{Binding Title}"/>
-        <TextBlock Text="{Binding SubTitle}"/>
-        <Image Source="{Binding}"/>
-        <TextBlock Text="{Binding }"/>
-        <TextBlock Text="{Binding }"/>
-        <TextBlock Text="{Binding }"/>
-        <TextBlock Text="{Binding }"/>
-        <TextBlock Text="{Binding }"/>
-        <TextBlock Text="{Binding }"/>
-        <TextBlock Text="{Binding }"/>
+    <Grid Margin="30">
+        <Viewbox HorizontalAlignment="Left" Margin="10" Grid.ColumnSpan="2">
+            <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+        </Viewbox>
+        <Grid Grid.Row="1" Margin="10" Grid.ColumnSpan="2">
+            <Viewbox HorizontalAlignment="Left" Grid.Row="1">
+                <TextBlock Text="{Binding SubTitle}" FontWeight="SemiBold"/>
+            </Viewbox>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+        </Grid>
+        <Image Source="{Binding Photo}" Grid.Row="2" Grid.RowSpan="2" Margin="10"/>
+        <Grid Grid.Row="2" Grid.Column="1" Margin="10">
+            <Viewbox HorizontalAlignment="Left">
+                <TextBlock Text="Contact." Foreground="DarkOrange"/>
+            </Viewbox>
+            <TextBlock Text="{Binding Email}" FontSize="30" Grid.Row="1" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Phone}" FontSize="30" Grid.Row="2" VerticalAlignment="Center"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.2*"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+        </Grid>
+        <Grid Grid.Row="3" Grid.Column="1" Margin="10">
+            <Viewbox HorizontalAlignment="Left" Grid.ColumnSpan="4">
+                <TextBlock Text="Channel." Foreground="DarkOrange"/>
+            </Viewbox>
+            <Viewbox HorizontalAlignment="Center" Grid.Row="2">
+                <TextBlock Text="Blog"/>
+            </Viewbox>
+            <Gui:ImageButton Tag="Blog" Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Margin="10" DefaultImageSource="../Resource/Tistory.png" PressedImageSource="../Resource/Tistory.png" ImageStretch="Uniform" Click="Button_Click"/>
+            <Viewbox HorizontalAlignment="Center" Grid.Row="2" Grid.Column="3">
+                <TextBlock Text="GitHub"/>
+            </Viewbox>
+            <Gui:ImageButton Tag="GitHub" Grid.Row="1" Grid.Column="4" Grid.RowSpan="3" Margin="10" DefaultImageSource="../Resource/Github.png" PressedImageSource="../Resource/Github.png" ImageStretch="Uniform" Click="Button_Click"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.2*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.5*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="94*"/>
+            <RowDefinition Height="95*"/>
+            <RowDefinition Height="232*"/>
+            <RowDefinition Height="232*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="344*"/>
+            <ColumnDefinition Width="570*"/>
+        </Grid.ColumnDefinitions>
     </Grid>
 </Page>
