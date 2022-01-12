@@ -9,7 +9,7 @@
       Title="프로필">
 
     <Grid>
-
+        <Image Source="../Resource/IdentificationPhoto.jpg"/>
         <TextBlock Text="{Binding Title}"/>
         <TextBlock Text="{Binding SubTitle}"/>
         <Image Source="{Binding}"/>
@@ -26,6 +26,5 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Image Source="../Resource/IdentificationPhoto.jpg"/>
     </Grid>
 </Page>
