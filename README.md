@@ -1,8 +1,8 @@
 Log Service Viewer
--Main Page
+(1)Main Page
  => Resume
--RealTimeLog Page
--ReportLog Page
+(2)RealTimeLog Page
+(3)ReportLog Page
 
 Log DLL
 
